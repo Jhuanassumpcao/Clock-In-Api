@@ -1,5 +1,8 @@
 import prisma from '../config/database';
-import { CreateTimeEntryDTO, UpdateTimeEntryDTO } from '../dtos/CreateTimeEntryDTO';
+import {
+  CreateTimeEntryDTO,
+  UpdateTimeEntryDTO,
+} from '../dtos/CreateTimeEntryDTO';
 
 export default class TimeEntryRepository {
   static async create(data: CreateTimeEntryDTO) {
@@ -12,7 +15,10 @@ export default class TimeEntryRepository {
     });
   }
 
-  static async update(id: number, data: Partial<UpdateTimeEntryDTO & { totalHours: number; status: string }>) {
+  static async update(
+    id: number,
+    data: Partial<UpdateTimeEntryDTO & { totalHours: number; status: string }>
+  ) {
     return prisma.timeEntry.update({
       where: { id },
       data,

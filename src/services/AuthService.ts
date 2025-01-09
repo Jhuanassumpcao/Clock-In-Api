@@ -13,7 +13,9 @@ export default class AuthService {
     if (!user || !(await bcrypt.compare(password, user.password))) {
       throw new Error('Invalid credentials');
     }
-    return jwt.sign({ id: user.id }, process.env.JWT_SECRET as string, { expiresIn: '1d' });
+    return jwt.sign({ id: user.id }, process.env.JWT_SECRET as string, {
+      expiresIn: '1d',
+    });
   }
 
   static async register(data: CreateUserDTO) {
