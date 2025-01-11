@@ -26,7 +26,7 @@ export default class TimeEntryRepository implements ITimeEntryRepository {
     });
   }
 
-  async list() {
-    return prisma.timeEntry.findMany();
+  async list(userId: number) {
+    return prisma.timeEntry.findMany({ where: { userId } });
   }
 }

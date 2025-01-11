@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import TimeEntryService from '../services/TimeEntryService';
 import TimeEntryRepository from '../repositories/TimeEntryRepository';
+import { CustomRequest } from '../middlewares/ensureAuthenticated';
 
 const timeEntryRepository = new TimeEntryRepository();
 const timeEntryService = new TimeEntryService(timeEntryRepository);
@@ -26,7 +27,9 @@ export default class TimeEntryController {
 
   static async list(req: Request, res: Response) {
     try {
-      const entries = await timeEntryService.list();
+      const user = (req as CustomRequest).user;
+      const userId = (user as any).id;
+      const entries = await timeEntryService.list(userId);
       res.json(entries);
     } catch (error: any) {
       res.status(500).json({ error: error.message });

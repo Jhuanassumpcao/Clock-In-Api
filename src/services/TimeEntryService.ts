@@ -39,7 +39,7 @@ export default class TimeEntryService implements ITimeEntryService {
     });
   }
 
-  async list() {
-    return this.timeEntryRepository.list();
+  async list(userId: number) {
+    return this.timeEntryRepository.list(userId);
   }
 }

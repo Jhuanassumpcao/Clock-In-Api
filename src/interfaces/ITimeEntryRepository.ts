@@ -14,7 +14,7 @@ export interface ITimeEntryRepository {
     id: number,
     data: Partial<UpdateTimeEntryDTO & { totalHours: number; status: string }>
   ): Promise<{ id: number; totalHours: number | null; status: string }>;
-  list(): Promise<
+  list(userId: number): Promise<
     Array<{
       id: number;
       userId: number;

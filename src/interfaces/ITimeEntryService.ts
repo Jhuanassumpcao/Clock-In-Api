@@ -10,7 +10,7 @@ export interface ITimeEntryService {
   endEntry(
     data: UpdateTimeEntryDTO
   ): Promise<{ id: number; totalHours: number | null; status: string }>;
-  list(): Promise<
+  list(userId: number): Promise<
     Array<{
       id: number;
       userId: number;
