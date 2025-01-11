@@ -1,25 +1,32 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import UserRepository from '../repositories/UserRepository';
+import { IUserRepository } from '../interfaces/IUserRepository';
+import { IAuthService } from '../interfaces/IAuthService';
 import { CreateUserDTO } from '../dtos/CreateUserDTO';
+import { ErrorMessages } from '../constants/errorMessages';
 
-import dotenv from 'dotenv';
+export default class AuthService implements IAuthService {
+  private userRepository: IUserRepository;
 
-dotenv.config();
+  constructor(userRepository: IUserRepository) {
+    this.userRepository = userRepository;
+  }
 
-export default class AuthService {
-  static async login(email: string, password: string) {
-    const user = await UserRepository.findByEmail(email);
+  async login(email: string, password: string): Promise<string> {
+    const user = await this.userRepository.findByEmail(email);
     if (!user || !(await bcrypt.compare(password, user.password))) {
-      throw new Error('Invalid credentials');
+      throw new Error(ErrorMessages.INVALID_CREDENTIALS);
+    }
+    if (!process.env.JWT_SECRET) {
+      throw new Error('JWT_SECRET is not defined');
     }
     return jwt.sign({ id: user.id }, process.env.JWT_SECRET as string, {
       expiresIn: '1d',
     });
   }
 
-  static async register(data: CreateUserDTO) {
+  async register(data: CreateUserDTO): Promise<{ id: number; email: string }> {
     data.password = await bcrypt.hash(data.password, 10);
-    return UserRepository.create(data);
+    return this.userRepository.create(data);
   }
 }

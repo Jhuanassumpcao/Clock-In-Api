@@ -1,22 +1,29 @@
-import TimeEntryRepository from '../repositories/TimeEntryRepository';
+import { ITimeEntryService } from '../interfaces/ITimeEntryService';
+import { ITimeEntryRepository } from '../interfaces/ITimeEntryRepository';
 import {
   CreateTimeEntryDTO,
   UpdateTimeEntryDTO,
 } from '../dtos/CreateTimeEntryDTO';
 
-export default class TimeEntryService {
-  static async startEntry(data: CreateTimeEntryDTO) {
-    const ongoingEntry = await TimeEntryRepository.findOngoingEntry(
+export default class TimeEntryService implements ITimeEntryService {
+  private timeEntryRepository: ITimeEntryRepository;
+
+  constructor(timeEntryRepository: ITimeEntryRepository) {
+    this.timeEntryRepository = timeEntryRepository;
+  }
+
+  async startEntry(data: CreateTimeEntryDTO) {
+    const ongoingEntry = await this.timeEntryRepository.findOngoingEntry(
       data.userId
     );
     if (ongoingEntry) {
       throw new Error('A work session is already ongoing.');
     }
-    return TimeEntryRepository.create(data);
+    return this.timeEntryRepository.create(data);
   }
 
-  static async endEntry(data: UpdateTimeEntryDTO) {
-    const ongoingEntry = await TimeEntryRepository.findOngoingEntry(
+  async endEntry(data: UpdateTimeEntryDTO) {
+    const ongoingEntry = await this.timeEntryRepository.findOngoingEntry(
       data.userId
     );
     if (!ongoingEntry) {
@@ -25,14 +32,14 @@ export default class TimeEntryService {
     const endTime = new Date(data.endTime);
     const totalHours =
       (endTime.getTime() - ongoingEntry.startTime.getTime()) / 3600000;
-    return TimeEntryRepository.update(ongoingEntry.id, {
+    return this.timeEntryRepository.update(ongoingEntry.id, {
       endTime,
       totalHours,
       status: 'completed',
     });
   }
 
-  static async list() {
-    return TimeEntryRepository.list();
+  async list() {
+    return this.timeEntryRepository.list();
   }
 }
