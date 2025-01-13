@@ -14,8 +14,11 @@ COPY . .
 RUN yarn prisma generate
 RUN yarn prisma migrate deploy
 
+# Compile a aplicação (caso use TypeScript ou outro processo de build)
+RUN yarn build
+
 # Exponha a porta usada pela aplicação
 EXPOSE 3001
 
 # Comando para iniciar o servidor
-CMD ["yarn", "start"]
+CMD ["node", "dist/server.js"]
