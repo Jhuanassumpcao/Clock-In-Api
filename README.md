@@ -6,6 +6,7 @@
 - Jest
 - Prisma
 - Docker
+- PostgreSQL
 
 ## Como Rodar os Testes com Jest
 Para rodar os testes utilizando Jest, execute o seguinte comando:
@@ -41,4 +42,7 @@ yarn dev
 
 ## Deploy
 O deploy da aplicação foi realizado no Render.
+
+## Banco de Dados
+A aplicação utiliza o banco de dados PostgreSQL.
 
