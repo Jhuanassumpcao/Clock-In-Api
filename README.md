@@ -41,7 +41,9 @@ yarn dev
 ```
 
 ## Deploy
-O deploy da aplicação foi realizado no Render.
+O deploy da aplicação foi realizado no Render. A versão gratuita desliga o server após um tempo sem requisição, me avise no email na hora de testar.
+
+jlassumpcao@inf.ufsm.br
 
 ## Banco de Dados
 A aplicação utiliza o banco de dados PostgreSQL.
