@@ -37,6 +37,7 @@ describe('AuthService', () => {
         id: 1,
         email: 'test@example.com',
         password: 'hashedPassword',
+        name: 'test'
       });
 
       await expect(
@@ -49,6 +50,7 @@ describe('AuthService', () => {
         id: 1,
         email: 'test@example.com',
         password: 'hashedPassword',
+        name: 'test'
       });
       jest.spyOn(bcrypt, 'compare').mockResolvedValue(true as never);
       (jwt.sign as jest.Mock).mockReturnValue('mockedToken');

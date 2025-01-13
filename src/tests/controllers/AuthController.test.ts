@@ -13,7 +13,10 @@ describe('AuthController', () => {
   });
 
   it('deve retornar token ao fazer login com credenciais válidas', async () => {
-    mockedAuthService.prototype.login.mockResolvedValue('mocked-token');
+    mockedAuthService.prototype.login.mockResolvedValue({
+      token: 'mocked-token', name: 'mocked-name',
+      id: 1
+    });
 
     const response = await request(app)
       .post('/auth/login')

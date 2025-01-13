@@ -10,14 +10,14 @@ export default class AuthController {
   static async login(req: Request, res: Response) {
     try {
       const { email, password } = req.body;
-      const token = await authService.login(email, password);
-      res.json({ token });
+      const { token, name, id } = await authService.login(email, password);
+      res.json({ token, name, id });
     } catch (error: any) {
       res
         .status(401)
         .json({ message: error.message || ErrorMessages.INVALID_CREDENTIALS });
     }
-  }
+  }  
 
   static async register(req: Request, res: Response) {
     try {
